@@ -70,11 +70,11 @@ impl Lame {
             ffi::lame_set_in_samplerate(self.ptr, sample_rate as c_int) })
     }
 
-    pub fn channels(&self) -> u32 {
-        unsafe { ffi::lame_get_num_channels(self.ptr) as u32 }
+    pub fn channels(&self) -> u8 {
+        unsafe { ffi::lame_get_num_channels(self.ptr) as u8 }
     }
 
-    pub fn set_channels(&mut self, channels: u32) -> Result<(), Error> {
+    pub fn set_channels(&mut self, channels: u8) -> Result<(), Error> {
         handle_simple_error(unsafe {
             ffi::lame_set_num_channels(self.ptr, channels as c_int) })
     }
