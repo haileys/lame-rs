@@ -2,3 +2,7 @@
 name = "lame"
 version = "0.1.0"
 authors = ["Charlie Somerville <charlie@charlie.bz>"]
+description = "Rust bindings for libmp3lame"
+license-file = "LICENSE"
+repository = "https://github.com/charliesome/lame-rs"
+homepage = "https://github.com/charliesome/lame-rs"
