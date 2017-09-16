@@ -6,3 +6,6 @@ description = "Rust bindings for libmp3lame"
 license = "MIT"
 repository = "https://github.com/charliesome/lame-rs"
 homepage = "https://github.com/charliesome/lame-rs"
+
+[dependencies]
+error-chain = "0.11.0"
