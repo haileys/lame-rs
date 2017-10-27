@@ -12,6 +12,8 @@ extern "C" {
     pub fn lame_get_num_channels(ptr: LamePtr) -> c_int;
     pub fn lame_set_quality(ptr: LamePtr, quality: c_int) -> c_int;
     pub fn lame_get_quality(ptr: LamePtr) -> c_int;
+    pub fn lame_set_brate(ptr: LamePtr, quality: c_int) -> c_int;
+    pub fn lame_get_brate(ptr: LamePtr) -> c_int;
     pub fn lame_init_params(ptr: LamePtr) -> c_int;
     pub fn lame_encode_buffer(ptr: LamePtr,
         pcm_l: *const i16, pcm_r: *const i16, pcm_numsamples: c_int,
