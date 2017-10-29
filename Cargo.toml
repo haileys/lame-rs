@@ -1,6 +1,6 @@
 [package]
 name = "lame"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["Charlie Somerville <charlie@charlie.bz>"]
 description = "Rust bindings for libmp3lame"
 license = "MIT"
