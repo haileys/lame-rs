@@ -54,11 +54,15 @@ pub enum EncodeError {
     PsychoAcousticError,
 }
 
+/// Represents a Lame encoder context.
 pub struct Lame {
     ptr: LamePtr,
 }
 
 impl Lame {
+    /// Creates a new Lame encoder context with default parameters.
+    ///
+    /// Returns None if liblame could not allocate its internal structures.
     pub fn new() -> Option<Lame> {
         let ctx = unsafe { ffi::lame_init() };
 
@@ -69,47 +73,65 @@ impl Lame {
         }
     }
 
+    /// Sample rate of input PCM data. Defaults to 44100 Hz.
     pub fn sample_rate(&self) -> u32 {
         unsafe { ffi::lame_get_in_samplerate(self.ptr) as u32 }
     }
 
+    /// Sets sample rate of input PCM data.
     pub fn set_sample_rate(&mut self, sample_rate: u32) -> Result<(), Error> {
         handle_simple_error(unsafe {
             ffi::lame_set_in_samplerate(self.ptr, sample_rate as c_int) })
     }
 
+    /// Number of channels in input stream. Defaults to 2.
     pub fn channels(&self) -> u8 {
         unsafe { ffi::lame_get_num_channels(self.ptr) as u8 }
     }
 
+    /// Sets number of channels in input stream.
     pub fn set_channels(&mut self, channels: u8) -> Result<(), Error> {
         handle_simple_error(unsafe {
             ffi::lame_set_num_channels(self.ptr, channels as c_int) })
     }
 
+    /// LAME quality parameter. See `set_quality` for more details.
     pub fn quality(&self) -> u8 {
         unsafe { ffi::lame_get_quality(self.ptr) as u8 }
     }
 
+    /// Sets LAME's quality parameter. True quality is determined by the
+    /// bitrate but this parameter affects quality by influencing whether LAME
+    /// selects expensive or cheap algorithms.
+    ///
+    /// This is a number from 0 to 9 (inclusive), where 0 is the best and
+    /// slowest and 9 is the worst and fastest.
     pub fn set_quality(&mut self, quality: u8) -> Result<(), Error> {
         handle_simple_error(unsafe {
             ffi::lame_set_quality(self.ptr, quality as c_int) })
     }
 
+    /// Returns the output bitrate in kilobits per second.
     pub fn kilobitrate(&self) -> i32 {
         unsafe { ffi::lame_get_brate(self.ptr) as i32 }
     }
 
+    /// Sets the target output bitrate. This value is in kilobits per second,
+    /// so passing 320 would select an output bitrate of 320kbps.
     pub fn set_kilobitrate(&mut self, quality: i32) -> Result<(), Error> {
         handle_simple_error(unsafe {
             ffi::lame_set_brate(self.ptr, quality as c_int) })
     }
 
+    /// Sets more internal parameters according to the other basic parameter
+    /// settings.
     pub fn init_params(&mut self) -> Result<(), Error> {
         handle_simple_error(unsafe {
             ffi::lame_init_params(self.ptr) })
     }
 
+    /// Encodes PCM data into MP3 frames. The `pcm_left` and `pcm_right`
+    /// buffers must be of the same length, or this function will panic.
     pub fn encode(&mut self, pcm_left: &[i16], pcm_right: &[i16], mp3_buffer: &mut [u8]) -> Result<usize, EncodeError> {
         if pcm_left.len() != pcm_right.len() {
             panic!("left and right channels must have same number of samples!");
