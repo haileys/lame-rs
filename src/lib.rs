@@ -102,7 +102,7 @@ impl Lame {
             ffi::lame_init_params(self.ptr) })
     }
 
-    pub fn encode(&self, pcm_left: &[i16], pcm_right: &[i16], mp3_buffer: &mut [u8]) -> Result<usize, EncodeError> {
+    pub fn encode(&mut self, pcm_left: &[i16], pcm_right: &[i16], mp3_buffer: &mut [u8]) -> Result<usize, EncodeError> {
         if pcm_left.len() != pcm_right.len() {
             panic!("left and right channels must have same number of samples!");
         }
