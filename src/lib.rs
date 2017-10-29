@@ -83,7 +83,7 @@ impl Lame {
         unsafe { ffi::lame_get_quality(self.ptr) as u8 }
     }
 
-    pub fn set_quality(&self, quality: u8) -> Result<(), Error> {
+    pub fn set_quality(&mut self, quality: u8) -> Result<(), Error> {
         handle_simple_error(unsafe {
             ffi::lame_set_quality(self.ptr, quality as c_int) })
     }
@@ -92,7 +92,7 @@ impl Lame {
         unsafe { ffi::lame_get_brate(self.ptr) as i32 }
     }
 
-    pub fn set_kilobitrate(&self, quality: i32) -> Result<(), Error> {
+    pub fn set_kilobitrate(&mut self, quality: i32) -> Result<(), Error> {
         handle_simple_error(unsafe {
             ffi::lame_set_brate(self.ptr, quality as c_int) })
     }
