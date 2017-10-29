@@ -126,7 +126,13 @@ impl Lame {
             -2 => Err(EncodeError::NoMem),
             -3 => Err(EncodeError::InitParamsNotCalled),
             -4 => Err(EncodeError::PsychoAcousticError),
-            sz => Ok(sz as usize),
+            _ => {
+                if retn < 0 {
+                    Err(EncodeError::Unknown(retn))
+                } else {
+                    Ok(sz as usize)
+                }
+            }
         }
     }
 }
