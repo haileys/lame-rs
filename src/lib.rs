@@ -38,6 +38,14 @@ fn handle_simple_error(retn: c_int) -> Result<(), Error> {
     }
 }
 
+fn int_size(sz: usize) -> c_int {
+    if sz > c_int::MAX as usize {
+        panic!("converting {} to c_int would overflow");
+    }
+
+    sz as c_int
+}
+
 #[derive(Debug)]
 pub enum EncodeError {
     OutputBufferTooSmall,
@@ -109,8 +117,8 @@ impl Lame {
 
         let retn = unsafe {
             ffi::lame_encode_buffer(self.ptr,
-                pcm_left.as_ptr(), pcm_right.as_ptr(), pcm_left.len() as c_int,
-                mp3_buffer.as_mut_ptr(), mp3_buffer.len() as c_int)
+                pcm_left.as_ptr(), pcm_right.as_ptr(), int_size(pcm_left.len()),
+                mp3_buffer.as_mut_ptr(), int_size(mp3_buffer.len()))
         };
 
         match retn {
